@@ -1,8 +1,10 @@
+import java.util.Date;
 public class Paciente {
 
     private String nome;
     private String sobrenome;
     private char sexo;
+    private int nascimento;
     private byte idade;
     private short altura;
     private double peso;
@@ -35,6 +37,9 @@ public class Paciente {
 
     public String getCpf() {
         return cpf;
+    }
+    public int getNascimento(){
+        return nascimento;
     }
 
     public double getImc() {
@@ -76,6 +81,7 @@ public class Paciente {
          String nome = " ";
          String sobrenome = " ";
          char sexo = '\u0000';
+         int nascimento = 0;
          byte idade = 0;
          short altura = 0;
          double peso = 0.0;
@@ -83,21 +89,21 @@ public class Paciente {
          double imc = 0.0;
     }
 
-    public Paciente(String nome, String sobrenome, char sexo, byte idade, short altura, double peso, String cpf) {
+    public Paciente(String nome, String sobrenome, char sexo, int nascimento, short altura, double peso, String cpf) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.sexo = sexo;
-        this.idade = idade;
+        this.nascimento = nascimento;
         this.altura = altura;
         this.peso = peso;
         this.cpf = cpf;
     }
 
-    public Paciente(String nome, String sobrenome, char sexo, byte idade, short altura, double peso) {
+    public Paciente(String nome, String sobrenome, char sexo, int nascimento, short altura, double peso) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.sexo = sexo;
-        this.idade = idade;
+        this.nascimento = nascimento;
         this.altura = altura;
         this.peso = peso;
     }
@@ -124,10 +130,7 @@ public class Paciente {
 
     public String obterCpfOfuscado(Paciente paciente){
         String cpf = paciente.getCpf();
-        String bloco1 = cpf.substring(0, 3);
         String bloco2 = cpf.substring(3, 6);
-        String bloco3 = cpf.substring(6, 9);
-        String bloco4 = cpf.substring(9, 11);
 
         cpf = "***"+"."+bloco2+"."+"***"+"-"+"***";
         return cpf;
@@ -136,6 +139,23 @@ public class Paciente {
     public double calcularImc(){
         //IMC = (peso) / (altura^2)
         return  this.peso  /  ((this.altura/100)  *  (this.altura/100));
+    }
+
+    public double calcularIdade(Paciente paciente){
+        Date d = new Date();
+        int year = d.getYear();
+        int currentYear = year + 1900;
+        int idade = currentYear - paciente.nascimento;
+        return idade;
+    }
+
+    public String validarCpf(Paciente paciente){
+        int tamanho = paciente.getCpf().length();
+        if (tamanho < 11){
+            throw new IllegalArgumentException("O CPF está inválido");
+        } else {
+            return "CPF válido!";
+        }
     }
 
 }
