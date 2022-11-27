@@ -6,7 +6,7 @@ public class Paciente {
     private char sexo;
     private int nascimento;
     private byte idade;
-    private short altura;
+    private double altura;
     private double peso;
     private String cpf;
     private double imc;
@@ -27,7 +27,7 @@ public class Paciente {
         return idade;
     }
 
-    public short getAltura() {
+    public double getAltura() {
         return altura;
     }
 
@@ -58,13 +58,14 @@ public class Paciente {
         this.sexo = sexo;
     }
 
-    public void setAltura(short altura) {
+    public void setAltura(double altura) {
         this.altura = altura;
     }
 
     public void setPeso(double peso) {
         this.peso = peso;
     }
+    public void setImc (double imc ) {this.imc = imc;}
 
     public void setCpf(String cpf) throws IllegalArgumentException {
         if (cpf == null)
@@ -83,13 +84,13 @@ public class Paciente {
          char sexo = '\u0000';
          int nascimento = 0;
          byte idade = 0;
-         short altura = 0;
+         double altura =  0;
          double peso = 0.0;
          String cpf = " ";
          double imc = 0.0;
     }
 
-    public Paciente(String nome, String sobrenome, char sexo, int nascimento, short altura, double peso, String cpf) {
+    public Paciente(String nome, String sobrenome, char sexo, int nascimento, double altura, double peso, String cpf, double imc) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.sexo = sexo;
@@ -99,7 +100,7 @@ public class Paciente {
         this.cpf = cpf;
     }
 
-    public Paciente(String nome, String sobrenome, char sexo, int nascimento, short altura, double peso) {
+    public Paciente(String nome, String sobrenome, char sexo, int nascimento, double altura, double peso, double imc) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.sexo = sexo;
@@ -116,9 +117,7 @@ public class Paciente {
 
     //Metodos
 
-    public double obterPedoIdeal (Paciente paciente){
-        short altura = paciente.getAltura();
-        char sexo = paciente.getSexo();
+    public double obterPedoIdeal (){
         if (sexo == 'h')
             return ((72.7 * altura)/100) - 58;
         if (sexo == 'm')
@@ -131,14 +130,13 @@ public class Paciente {
     public String obterCpfOfuscado(Paciente paciente){
         String cpf = paciente.getCpf();
         String bloco2 = cpf.substring(3, 6);
-
         cpf = "***"+"."+bloco2+"."+"***"+"-"+"***";
         return cpf;
     }
 
     public double calcularImc(){
         //IMC = (peso) / (altura^2)
-        return  this.peso  /  ((this.altura/100)  *  (this.altura/100));
+        return (peso / (altura*altura)) ;
     }
 
     public double calcularIdade(Paciente paciente){
@@ -156,6 +154,25 @@ public class Paciente {
         } else {
             return "CPF válido!";
         }
+    }
+
+    public String obterSituacaoIMC(){
+        if (imc < 17) {
+           return "Muito Abaixo do Peso!";
+        } else if (imc > 17 && imc < 18.49 ) {
+            return "Abaixo do peso";
+        } else if (imc > 18.50 && imc < 24.99){
+            return "Peso normal";
+        } else if (imc > 25 && imc < 29.99){
+            return "Acima do Peso";
+        } else if (imc > 30 && imc < 34.99){
+            return "Obesidade I";
+        } else if (imc > 35 && imc < 39.99){
+            return "Obesidade II (severa)";
+        } else  {
+            return "Obesidade III (morbida)";
+        }
+
     }
 
 }
